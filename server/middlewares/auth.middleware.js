@@ -15,7 +15,12 @@ export const protect = async (req, res, next) => {
     // Verify token
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     // Get user (without password)
-    req.user = await userModel.findById(decoded.id).select('-password');
+    const user = await userModel.findById(decoded.id).select('-password');
+    if (!user) {
+      return res.status(401).json({ message: 'Not authorized, user not found' });
+    }
+    req.user = user;
+
     next();
   } catch (error) {
     console.error('Auth Error:', error);
