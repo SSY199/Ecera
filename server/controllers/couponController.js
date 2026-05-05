@@ -12,7 +12,7 @@ export const createCoupon = async (req, res) => {
     const coupon = new Coupon({
       code,
       discountPercentage,
-      expiresAt,
+      expiryDate: expiresAt,
       usageLimit
     });
 
